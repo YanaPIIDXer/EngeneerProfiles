@@ -1,0 +1,32 @@
+version: "3.0"
+services:
+    frontend:
+        build: ./frontend
+        volumes:
+            - ./frontend/src:/app
+            - /app/node_modules
+        ports:
+            - 80:80
+        tty: true
+        
+    backend:
+        build: ./backend
+        volumes:
+            - ./backend/src:/var/www/html/app
+            - /var/www/html/app/storage
+            - /var/www/html/app/vendor
+        ports:
+            - 3000:80
+        tty: true
+
+    db:
+        image: mysql:5.7
+        platform: linux/x86_64
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_USER: develop
+            MYSQL_PASSWORD: develop
+        ports:
+            - 3306:3306
+        volumes:
+            - ./mysql_data:/var/lib/mysql
